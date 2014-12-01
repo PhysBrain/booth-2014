@@ -1,6 +1,6 @@
 'use strict';
-//Physijs.scripts.worker = 'js/libs/physijs_worker.js';
-//Physijs.scripts.ammo = 'ammo.js';
+Physijs.scripts.worker = 'js/libs/physijs_worker.js';
+Physijs.scripts.ammo = 'ammo.js';
 
 var frameRequest = ( window.mozRequestAnimationFrame ||
                      window.webkitRequestAnimationFrame ||
@@ -14,7 +14,7 @@ var Gamepads = [];
 var webkitGamepad = ( navigator.webkitGetGamepads ? true : false );
 var gamepad = null;
 
-var activeSection = 1;
+var activeSection = 0;
 var maxPower = 1000;
 var maxSpeed = 20;
 var chickens = [];
@@ -34,11 +34,12 @@ var cameraLock = false;
 var robot = {};
 var grippedItem = null;
 
-var wood1Tex = new THREE.ImageUtils.loadTexture('images/wood1.jpg');
-var wood2Tex = new THREE.ImageUtils.loadTexture('images/wood2.jpg');
-var wood3Tex = new THREE.ImageUtils.loadTexture('images/wood3.jpg');
+var woodTex = new THREE.ImageUtils.loadTexture('images/wood1.jpg');
+//var wood1Tex = new THREE.ImageUtils.loadTexture('images/wood1.jpg');
+//var wood2Tex = new THREE.ImageUtils.loadTexture('images/wood2.jpg');
+//var wood3Tex = new THREE.ImageUtils.loadTexture('images/wood3.jpg');
 
-//var wood1Mat = new THREE.MeshLambertMaterial( { color: 0x886644 } );
+//var tanMat = new THREE.MeshLambertMaterial( { color: 0x886644 } );
 var foamMat = new THREE.MeshLambertMaterial( { color: 0x888888 } );
 var woodMat = new THREE.MeshLambertMaterial( { map: wood1Tex } );
 var stoneMat = new THREE.MeshLambertMaterial( { color: 0x666666 } );
