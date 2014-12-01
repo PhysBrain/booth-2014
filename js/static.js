@@ -13,7 +13,8 @@ function initGround() {
     var groundTex = THREE.ImageUtils.loadTexture( 'images/floor.png' );
     //var groundTex = THREE.ImageUtils.loadTexture( 'arena.png' );
     var groundMat = new THREE.MeshLambertMaterial( { map: groundTex } );
-    
+    var groundSurf = Physijs.createMaterial( groundMat, 0.8, 0.2 );
+
     // Ground
     var groundPlane = new THREE.PlaneGeometry(270, 270);
     var ground = new THREE.Mesh( groundPlane, groundMat );
@@ -95,21 +96,22 @@ function makeBadRoad(section) {
     var active = (section == activeSection);
 
     var roadGeom = new THREE.BoxGeometry(36, 36, 0.25);
-    var roadMat = new THREE.MeshLambertMaterial({color: 0x664422});
-//    var roadMat = Physijs.createMaterial( roadMat, 0.8, 0.2 );
-    var roadMesh = new THREE.Mesh( roadGeom, roadMat);
-
+    var roadMat  = new THREE.MeshLambertMaterial({color: 0x664422});
+    var roadSurf = Physijs.createMaterial( roadMat, 0.8, 0.2 );
+    //var roadMesh = new THREE.Mesh( roadGeom, roadMat);
+    var roadMesh = new Physijs.BoxMesh( roadGeom, roadMat, 0 );
     roadMesh.position.z = 0.125;
     roadMesh.receiveShadow = true;
 
     var bumpGeom = new THREE.CylinderGeometry(0.5, 0.5, 8.0);
-    var bumpMat = new THREE.MeshLambertMaterial({color: 0x442200});
-//    var bumpMat = Physijs.createMaterial( bumpMat, 0.8, 0.2 );
+    var bumpMat  = new THREE.MeshLambertMaterial({color: 0x442200});
+    var bumpSurf = Physijs.createMaterial( bumpMat, 0.8, 0.2 );
     var bump;
     var offset = 4.5*Math.cos(Math.PI/4)-17.5;
     for (var i=0; i<4; ++i) {
         for (var j=0; j<4; ++j) {
-            bump = new THREE.Mesh(bumpGeom, bumpMat);
+            //bump = new THREE.Mesh(bumpGeom, bumpMat);
+            bump = new Physijs.CylinderMesh( bumpGeom, bumpMat, 0 );
             bump.rotation.z = Math.PI/4;
             bump.position.set(offset+9.5*i, offset+9.5*j, 0.25);
             bump.receiveShadow = true;
@@ -119,8 +121,8 @@ function makeBadRoad(section) {
     offset += 4.75;
     for (var i=0; i<3; ++i) {
         for (var j=0; j<3; ++j) {
-            bump = new THREE.Mesh(bumpGeom, bumpMat);
-	    
+            //bump = new THREE.Mesh(bumpGeom, bumpMat);
+            bump = new Physijs.CylinderMesh( bumpGeom, bumpMat, 0 );
             bump.rotation.z = -Math.PI/4;
             bump.position.set(offset+9.5*i, offset+9.5*j, 0.25);
             bump.receiveShadow = true;
