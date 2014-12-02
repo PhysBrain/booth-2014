@@ -1,6 +1,6 @@
 'use strict';
-//Physijs.scripts.worker = 'js/libs/physijs_worker.js';
-//Physijs.scripts.ammo = 'ammo.js';
+Physijs.scripts.worker = 'js/libs/physijs_worker.js';
+Physijs.scripts.ammo = 'ammo.js';
 
 var frameRequest = ( window.mozRequestAnimationFrame ||
                      window.webkitRequestAnimationFrame ||
@@ -47,9 +47,9 @@ var pvcMatDS = new THREE.MeshLambertMaterial( { color: 0xAAAAAA,
                                                 side: THREE.DoubleSide } );
 var invisibleMat = new THREE.MeshBasicMaterial( { visible: false } );
 
-//var woodSurf = Physijs.createMaterial( woodMat, 0.5, 0.2 );
-//var pvcSurf = Physijs.createMaterial( pvcMat, 0.8, 0.2 );
-//var invisibleSurf = Physijs.createMaterial( invisibleMat, 0, 0 );
+var woodSurf = Physijs.createMaterial( woodMat, 0.5, 0.2 );
+var pvcSurf = Physijs.createMaterial( pvcMat, 0.8, 0.2 );
+var invisibleSurf = Physijs.createMaterial( invisibleMat, 0, 0 );
 
 var gameOver, gamePaused;
 var cbScore, score = 0;
@@ -57,10 +57,8 @@ var gameClock = {
     startTime: null,
     interval: null
 };
-var scoreKeeper = {
-    score: 0,
-    interval: null
-};
+
+var scoreKeeper = new ScoreKeeper(activeSection);
 
 /*function showReadyClock() {
     gamePaused = true;
@@ -82,6 +80,7 @@ var scoreKeeper = {
     }, 6000);
 };
 */
+
 function startGameClock() {
     document.getElementById("time").innerHTML = "3:00";
     gameClock.startTime = Date.now();
@@ -145,35 +144,6 @@ function updateScore() {
     var display = document.getElementById("score");
     display.innerHTML = scoreKeeper.score.toString();
 };
-
-function computeScore() {
-    score = 0;
-    // How are the chickens faring?
-    for (var i=0; i<3; ++i) {
-        var chicken = chickens[i];
-        var alive = (chicken.matrixWorld.elements[6] > 0.5);
-        var safe = !(chicken.position.x < -135 ||
-                     chicken.position.x > -111 ||
-                     chicken.position.y < -135 ||
-                     chicken.position.y > -111);
-        if (alive) {
-            if (safe) {
-                score += 10;
-            }
-            else {
-                score += 4;
-            }
-        }
-        else {
-            score -= 10;
-        }
-    }
-    // Unfortunately no negative score is allowed.
-    if (score < 0) {
-        score = 0;
-    }
-    return score;
-}
 
 function initBladeRunner() {
     gamePaused = true;
