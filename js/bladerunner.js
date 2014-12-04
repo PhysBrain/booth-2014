@@ -48,9 +48,19 @@ var pvcMatDS = new THREE.MeshLambertMaterial( { color: 0xAAAAAA,
                                                 side: THREE.DoubleSide } );
 var invisibleMat = new THREE.MeshBasicMaterial( { visible: false } );
 
-//var woodSurf = Physijs.createMaterial( woodMat, 0.5, 0.2 );
-//var pvcSurf = Physijs.createMaterial( pvcMat, 0.8, 0.2 );
-//var invisibleSurf = Physijs.createMaterial( invisibleMat, 0, 0 );
+var woodSurf = woodMat;
+var pvcSurf = pvcMat;
+var invisibleSurf = invisibleMat;
+
+var enablePhysics = true;
+
+if (enablePhysics) {
+    Physijs.scripts.worker = 'js/libs/physijs_worker.js';
+    Physijs.scripts.ammo = 'ammo.js';
+    woodSurf = Physijs.createMaterial( woodMat, 0.5, 0.2 );
+    pvcSurf = Physijs.createMaterial( pvcMat, 0.8, 0.2 );
+    invisibleSurf = Physijs.createMaterial( invisibleMat, 0, 0 );
+}
 
 var gameOver, gamePaused;
 var cbScore, score = 0;
@@ -58,12 +68,11 @@ var gameClock = {
     startTime: null,
     interval: null
 };
-var scoreKeeper = {
-    score: 0,
-    interval: null
-};
 
-/*function showReadyClock() {
+var scoreKeeper = { score : 0 };
+//var scoreKeeper = new ScoreKeeper(activeSection);
+
+function showReadyClock() {
     gamePaused = true;
     var startTime = Date.now();
     var docElem = document.getElementById("alert");
@@ -82,7 +91,7 @@ var scoreKeeper = {
         startGameClock();
     }, 6000);
 };
-*/
+
 function startGameClock() {
     document.getElementById("time").innerHTML = "3:00";
     gameClock.startTime = Date.now();
@@ -142,39 +151,10 @@ function updateGameClock() {
 };
 
 function updateScore() {
-    scoreKeeper.score = computeScore();
+    //scoreKeeper.score = computeScore();
     var display = document.getElementById("score");
     display.innerHTML = scoreKeeper.score.toString();
 };
-
-function computeScore() {
-    score = 0;
-    // How are the chickens faring?
-    for (var i=0; i<3; ++i) {
-        var chicken = chickens[i];
-        var alive = (chicken.matrixWorld.elements[6] > 0.5);
-        var safe = !(chicken.position.x < -135 ||
-                     chicken.position.x > -111 ||
-                     chicken.position.y < -135 ||
-                     chicken.position.y > -111);
-        if (alive) {
-            if (safe) {
-                score += 10;
-            }
-            else {
-                score += 4;
-            }
-        }
-        else {
-            score -= 10;
-        }
-    }
-    // Unfortunately no negative score is allowed.
-    if (score < 0) {
-        score = 0;
-    }
-    return score;
-}
 
 function initBladeRunner() {
     gamePaused = true;
@@ -192,7 +172,7 @@ function initBladeRunner() {
     initControls();
 
     // Give the ready.. set.. go.. countdown.
- //   showReadyClock();
+    showReadyClock();
 
     // Launch the animation loop
     animate();
@@ -210,20 +190,21 @@ function initGUI() {
 		render_stats.domElement.style.zIndex = 100;
 		container.appendChild( render_stats.domElement );
 
-/*
-		// Graph that diplays the rate at which the simulation is running.
-		physics_stats = new Stats();
-		physics_stats.domElement.style.position = 'absolute';
-		physics_stats.domElement.style.top = '50px';
-		physics_stats.domElement.style.zIndex = 100;
-		container.appendChild( physics_stats.domElement );
-*/
+    if ( enablePhysics ) {
+		    // Graph that diplays the rate at which the simulation is running.
+		    physics_stats = new Stats();
+		    physics_stats.domElement.style.position = 'absolute';
+		    physics_stats.domElement.style.top = '50px';
+		    physics_stats.domElement.style.zIndex = 100;
+		    container.appendChild( physics_stats.domElement );
+    }
+
     // The main viewport where the scene will be rendered.
     if (webglAvailable()) {
-	renderer = new THREE.WebGLRenderer();
+	      renderer = new THREE.WebGLRenderer();
     } else {
-	console.log("WebGL not detected. Switching to Canvas...");
-	renderer = new THREE.CanvasRenderer();
+	      console.log("WebGL not detected. Switching to Canvas...");
+	      renderer = new THREE.CanvasRenderer();
     }
     renderer.setClearColor( backgroundColor, 1 );
     renderer.setSize(WIDTH, HEIGHT);
@@ -235,21 +216,23 @@ function initGUI() {
 
 // The scene object keeps track of everything to be rendered.
 function initScene() {
-    // Use the Physijs.Scene to add physics
-    scene = new THREE.Scene();
-  //  scene = new Physijs.Scene();
-    scene.fog = new THREE.FogExp2( backgroundColor, 0.0002 );
-    // Set up some global physics parameters
-//		scene.setGravity(new THREE.Vector3( 0, 0, -30 ));
-/*    
-		scene.addEventListener( 'update', function() {
-        if (!gamePaused) {
-            if ( scene.simulate( undefined, 2 ) ) {
-                physics_stats.update();
+    if ( enablePhysics ) {
+        scene = new Physijs.Scene();
+        // Set up some global physics parameters
+        scene.setGravity(new THREE.Vector3( 0, 0, -30 ));
+		    scene.addEventListener( 'update', function() {
+            if (!gamePaused) {
+                if ( scene.simulate( undefined, 2 ) ) {
+                    physics_stats.update();
+                }
             }
-        }
-    } );
-*/	
+        } );
+    }
+    else {
+        scene = new THREE.Scene();
+    }
+    scene.fog = new THREE.FogExp2( backgroundColor, 0.0002 );
+
     // The camera is the user's eye(s) into our scene
     camera = new THREE.PerspectiveCamera(60, WIDTH/HEIGHT, 0.1, 1000);
     camera.up.set(0, 0, 1);
@@ -433,9 +416,7 @@ function initControls() {
     });
 
 }
-//====================================================================
-// You shouldn't have to change anything else below this point.
-//--------------------------------------------------------------------
+
 function onWindowResize(event) {
     WIDTH = window.innerWidth;
     HEIGHT = window.innerHeight;
@@ -543,6 +524,19 @@ function updateJoystick() {
     if (A) {
         toggleGates(activeSection);
     }
+    if (START) {
+        if (!gameOver) {
+            if (gamePaused) {
+                resumeGameClock();
+            }
+            else {
+                pauseGameClock();
+            }
+        }
+        else {
+            // TODO: Reset and restart the game
+        }
+    }
 /*
     if (DN) {
         robot.arm.rotation.x -= 5*Math.PI/180;
@@ -568,23 +562,29 @@ function animate() {
     requestAnimationFrame(animate);
     updateJoystick();
     updateScore();
-
+    TWEEN.update();
+    if ( enablePhysics && !gamePaused ) {
+        if (scene.simulate( undefined, 2 ) ) {
+            physics_stats.update();
+        }
+    }
     render();
 }
 
 function render() {
-    TWEEN.update();
     renderer.render( scene, camera );
     render_stats.update();
 }
+
+// Check to see if the browser supports WebGL
 function webglAvailable() {
     try {
         var canvas = document.createElement("canvas");
-        return !!
-            window.WebGLRenderingContext && 
-            (canvas.getContext("webgl") || 
-                canvas.getContext("experimental-webgl"));
-    } catch(e) { 
+        return !!( window.WebGLRenderingContext && 
+                   ( canvas.getContext("webgl") || 
+                     canvas.getContext("experimental-webgl") ) );
+    }
+    catch(e) { 
         return false;
-    } 
+    }
 }
