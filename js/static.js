@@ -15,7 +15,7 @@ function initGround() {
     var groundMat = new THREE.MeshLambertMaterial( { map: groundTex } );
     
     // Ground
-    var groundPlane = new THREE.PlaneGeometry(270, 270);
+    var groundPlane = new THREE.PlaneBufferGeometry(270, 270);
     var ground = new THREE.Mesh( groundPlane, groundMat );
     ground.visible = true;
     ground.receiveShadow = true;

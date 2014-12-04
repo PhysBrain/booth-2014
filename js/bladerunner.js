@@ -157,15 +157,16 @@ function initBladeRunner() {
     gamePaused = true;
     gameOver = false;
     
+    initGUI();
+    initScene();
+
     var phi = activeSection*Math.PI/2;
     var x0 = -120;
     var y0 = -122.5;
     var r0 = Math.sqrt(x0*x0 + y0*y0);
     var theta = Math.atan2(y0, x0);
-    
-    initGUI();
-    initScene();
-  //  initRobot( r0*Math.cos(theta + phi), r0*Math.sin(theta + phi) );
+    initRobot( r0*Math.cos(theta + phi), r0*Math.sin(theta + phi) );
+
     initControls();
 
     // Give the ready.. set.. go.. countdown.
