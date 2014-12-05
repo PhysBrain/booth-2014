@@ -460,11 +460,11 @@ function updateJoystick() {
     var DW = gamepad.buttons[14];
     var DE = gamepad.buttons[15];
 
-    // Right stick drives the robot
+    // Tank drive for robot (LY & RY)
     var pL = maxPower;
     var pR = maxPower;
-    var vL = maxSpeed*(RY-RX);
-    var vR = maxSpeed*(RY+RX);
+    var vL = maxSpeed*(LY);
+    var vR = maxSpeed*(RY);
 /*
     if (Math.abs(vL) > 0.1 || Math.abs(vR) > 0.1) {
 		    robot.axleL.configureAngularMotor( 0, 1, 0, vL, pL );
@@ -476,12 +476,12 @@ function updateJoystick() {
 		    robot.axleL.disableAngularMotor( 0 );
 		    robot.axleR.disableAngularMotor( 0 );
     }
-
-    // Use A/B to activate the claw
+*/
+    // Use DE to close the claw, DW to open
     var fL = robot.fingerL.localToWorld(new THREE.Vector3(0,1.5,0));
     var fR = robot.fingerR.localToWorld(new THREE.Vector3(0,1.5,0));
     var r = new THREE.Vector3((fL.x+fR.x)/2,(fL.y+fR.y)/2,(fL.z+fR.z));
-    if (A && !grippedItem) { // Pick something up
+    if (DE && !grippedItem) { // Pick something up
         for (var i=0; i<3; ++i) {
             // Get the world coordinates of the top of the chicken
             var s = chickens[i].localToWorld(new THREE.Vector3(0,5,0));
@@ -499,7 +499,7 @@ function updateJoystick() {
             }
         }
     }
-    if (B && grippedItem) { // Drop something
+    if (DW && grippedItem) { // Drop something
         grippedItem.applyMatrix( robot.palm.matrixWorld );
         grippedItem.setLinearFactor(new THREE.Vector3(0,0,0));
         grippedItem.setAngularFactor(new THREE.Vector3(0,0,0));
@@ -509,7 +509,7 @@ function updateJoystick() {
         grippedItem.setAngularFactor(new THREE.Vector3(1,1,1));
         grippedItem = null;
     }
-*/
+
     if (X) {
         toggleSmallMast(activeSection);
     }
