@@ -13,10 +13,11 @@ function initGround() {
     var groundTex = THREE.ImageUtils.loadTexture( 'images/floor.png' );
     //var groundTex = THREE.ImageUtils.loadTexture( 'arena.png' );
     var groundMat = new THREE.MeshLambertMaterial( { map: groundTex } );
-    
+    var groundSurf = Physijs.createMaterial( groundMat, 0.8, 0.2 );
+
     // Ground
-    var groundPlane = new THREE.PlaneBufferGeometry(270, 270);
-    var ground = new Physijs.BoxMesh( groundPlane, groundMat );
+    var groundPlane = new THREE.BoxGeometry(270, 270, 1);
+    var ground = new Physijs.BoxMesh( groundPlane, groundSurf, 0 );
     ground.visible = true;
     ground.receiveShadow = true;
     scene.add( ground );
@@ -54,7 +55,7 @@ function initWalls(section) {
         var y1 = 135.75;
         var r1 = Math.sqrt(x1*x1 + y1*y1);
         var theta1 = Math.atan2(y1, x1);
-        var wallMesh1 = new Physijs.BoxMesh( wallGeom1, woodMat);
+        var wallMesh1 = new Physijs.BoxMesh( wallGeom1, woodSurf, 0);
         wallMesh1.rotation.z = theta;
         wallMesh1.position.set( r1*Math.cos(theta + theta1),
                                 r1*Math.sin(theta + theta1),
@@ -67,7 +68,7 @@ function initWalls(section) {
         var y2 = 111.0;
         var r2 = Math.sqrt(x2*x2 + y2*y2);
         var theta2 = Math.atan2(y2, x2);
-        var wallMesh2 = new Physijs.BoxMesh( wallGeom2, woodMat );
+        var wallMesh2 = new Physijs.BoxMesh( wallGeom2, woodSurf, 0 );
         wallMesh2.rotation.z = theta;
         wallMesh2.position.set( r2*Math.cos(theta + theta2),
                                 r2*Math.sin(theta + theta2),
@@ -80,7 +81,7 @@ function initWalls(section) {
         var y3 = 56.0;
         var r3 = Math.sqrt(x3*x3 + y3*y3);
         var theta3 = Math.atan2(y3, x3);
-        var wallMesh3 = new Physijs.BoxMesh( wallGeom3, woodMat);
+        var wallMesh3 = new Physijs.BoxMesh( wallGeom3, woodSurf, 0);
         wallMesh3.rotation.z = theta + Math.PI/4;
         wallMesh3.position.set( r3*Math.cos(theta + theta3),
                                 r3*Math.sin(theta + theta3),
@@ -96,20 +97,20 @@ function makeBadRoad(section) {
 
     var roadGeom = new THREE.BoxGeometry(36, 36, 0.25);
     var roadMat = new THREE.MeshLambertMaterial({color: 0x664422});
-    var roadMat = Physijs.createMaterial( roadMat, 0.8, 0.2 );
-    var roadMesh = new THREE.Mesh( roadGeom, roadMat);
+    var roadSurf = Physijs.createMaterial( roadMat, 0.8, 0.2 );
+    var roadMesh = new Physijs.BoxMesh( roadGeom, roadSurf, 0);
 
     roadMesh.position.z = 0.125;
     roadMesh.receiveShadow = true;
 
     var bumpGeom = new THREE.CylinderGeometry(0.5, 0.5, 8.0);
     var bumpMat = new THREE.MeshLambertMaterial({color: 0x442200});
-    var bumpMat = Physijs.createMaterial( bumpMat, 0.8, 0.2 );
+    var bumpSurf = Physijs.createMaterial( bumpMat, 0.8, 0.2 );
     var bump;
     var offset = 4.5*Math.cos(Math.PI/4)-17.5;
     for (var i=0; i<4; ++i) {
         for (var j=0; j<4; ++j) {
-            bump = new Physijs.BoxMesh(bumpGeom, bumpMat);
+            bump = new Physijs.BoxMesh(bumpGeom, bumpSurf, 0);
             bump.rotation.z = Math.PI/4;
             bump.position.set(offset+9.5*i, offset+9.5*j, 0.25);
             bump.receiveShadow = true;
@@ -119,7 +120,7 @@ function makeBadRoad(section) {
     offset += 4.75;
     for (var i=0; i<3; ++i) {
         for (var j=0; j<3; ++j) {
-            bump = new Physijs.BoxMesh(bumpGeom, bumpMat);
+            bump = new Physijs.BoxMesh(bumpGeom, bumpSurf, 0);
 	    
             bump.rotation.z = -Math.PI/4;
             bump.position.set(offset+9.5*i, offset+9.5*j, 0.25);
@@ -138,11 +139,11 @@ function makeBridge(section) {
     var uprightGeom = new THREE.BoxGeometry(0.75, 4, 36);
 
     var center, ramp1, ramp2, up1, up2;
-    center = new Physijs.BoxMesh(plankGeom, woodMat);
-    ramp1 = new Physijs.BoxMesh(plankGeom, woodMat);
-    ramp2 = new Physijs.BoxMesh(plankGeom, woodMat);
-    up1 = new Physijs.BoxMesh(uprightGeom, woodMat);
-    up2 = new Physijs.BoxMesh(uprightGeom, woodMat);
+    center = new Physijs.BoxMesh(plankGeom, woodSurf, 0);
+    ramp1 = new Physijs.BoxMesh(plankGeom, woodSurf, 0);
+    ramp2 = new Physijs.BoxMesh(plankGeom, woodSurf, 0);
+    up1 = new Physijs.BoxMesh(uprightGeom, woodSurf, 0);
+    up2 = new Physijs.BoxMesh(uprightGeom, woodSurf, 0);
  
     center.castShadow = true;
     ramp1.castShadow = true;
@@ -184,12 +185,12 @@ function makeOSOW (section) {
     var buttonGeom = new THREE.BoxGeometry(1.5, 1.5, 6);
 
     var backPlane, base, foot1, foot2, arm, button;
-    backPlane = new Physijs.BoxMesh(backPlaneGeom, woodMat);
-    base = new Physijs.BoxMesh(baseGeom, woodMat);
-    foot1 = new Physijs.BoxMesh(footGeom, woodMat);
-    foot2 = new Physijs.BoxMesh(footGeom, woodMat);
-    arm = new Physijs.BoxMesh(armGeom, woodMat);
-    button = new Physijs.BoxMesh(buttonGeom, woodMat);
+    backPlane = new Physijs.BoxMesh(backPlaneGeom, woodSurf, 0);
+    base = new Physijs.BoxMesh(baseGeom, woodSurf, 0);
+    foot1 = new Physijs.BoxMesh(footGeom, woodSurf, 0);
+    foot2 = new Physijs.BoxMesh(footGeom, woodSurf, 0);
+    arm = new Physijs.BoxMesh(armGeom, woodSurf, 0);
+    button = new Physijs.BoxMesh(buttonGeom, woodSurf, 0);
     
     backPlane.position.set(0, 0, 20);
     backPlane.castShadow = true;
