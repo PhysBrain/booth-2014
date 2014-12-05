@@ -1,102 +1,95 @@
 //////////////ROBOT SIMULATOR CODE - GORDON TENEV/////////////
-
 function initRobot(x0, y0) {
-    var robot = new THREE.Object3D;
+    robot = new THREE.Object3D;
     robot.position.x = x0;
     robot.position.y = y0;
     robot.position.z = 5;
-    var body=new THREE.Mesh( new THREE.BoxGeometry(5,12,1), woodMat);
-    body.position.x = -5;
-    body.position.y = 0;
-    body.position.z = 0;
-    robot.add(body);
+    robot.body=new THREE.Mesh( new THREE.BoxGeometry(5,12,1), woodMat);
+    robot.body.position.x = -5;
+    robot.body.position.y = 0;
+    robot.body.position.z = 0;
+    robot.add(robot.body);
     var pvc1= new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,16,16), pvcMat);
     pvc1.position.y = 6;
     pvc1.rotation.z = Math.PI/2;
-    robot.add(pvc1);
+    robot.body.add(pvc1);
     var pvc2= new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,16,16), pvcMat);
     pvc2.position.y = -6;
     pvc2.rotation.z = Math.PI/2;
-    robot.add(pvc2);
+    robot.body.add(pvc2);
     var pvc3= new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,20,16), pvcMat);
     pvc3.position.z = -2;
     pvc3.position.y = -6;
     pvc3.position.x = -2;
     pvc3.rotation.z = Math.PI/2;
-    robot.add(pvc3);
+    robot.body.add(pvc3);
     var pvc4= new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,4,16), pvcMat);
     pvc4.position.y = -6;
     pvc4.position.z = -0.25;
     pvc4.position.x = 8;
     pvc4.rotation.z = Math.PI/2;
     pvc4.rotation.y = Math.PI/2;
-    robot.add(pvc4);
+    robot.body.add(pvc4);
     var pvc5= new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,20,16), pvcMat);
     pvc5.position.z = -2;
     pvc5.position.y = 6;
     pvc5.position.x = -2;
     pvc5.rotation.z = Math.PI/2;
-    robot.add(pvc5);
+    robot.body.add(pvc5);
     var pvc6= new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,4,16), pvcMat);
-    pvc6.position.y = 6;
-    pvc6.position.z = -0.25;
+    pvc6.position.set(8, 6, -0.25);
     pvc6.position.x = 8;
     pvc6.rotation.z = Math.PI/2;
     pvc6.rotation.y = Math.PI/2;
-    robot.add(pvc6);
+    robot.body.add(pvc6);
     var pvc7= new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,2,16), pvcMat);
-    pvc7.position.y = 6;
-    pvc7.position.z = -1;
-    pvc7.position.x = -7.5;
+    pvc7.position.set(-7.5, 6, -1);
     pvc7.rotation.z = Math.PI/2;
     pvc7.rotation.y = Math.PI/2;
-    robot.add(pvc7);
+    robot.body.add(pvc7);
     var pvc8= new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,2,16), pvcMat);
-    pvc8.position.y = -6;
-    pvc8.position.z = -1;
-    pvc8.position.x = -7.5;
+    pvc8.position.set(-7.5, -6, -1);
     pvc8.rotation.z = Math.PI/2;
     pvc8.rotation.y = Math.PI/2;
-    robot.add(pvc8);
-    var pvc9= new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,12.5,16), pvcMat);
-    pvc9.position.z = 2;
-    robot.add(pvc9);
+    robot.body.add(pvc8);
+    var pvc9= new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,10.5,16), pvcMat);
+    pvc9.position.set(0, 0, 4);
+    robot.body.add(pvc9);
     var pvc10= new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,12.2,16), pvcMat);
-    pvc10.position.z = -2;
-    pvc10.position.x = -11.5;
-    robot.add(pvc10);
+    pvc10.position.set(-11.5, 0, -2);
+    robot.body.add(pvc10);
     var pvc11= new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,2,16), pvcMat);
-    pvc11.position.y = -6;
-    pvc11.position.z = 1;
+    pvc11.position.set(0, -6, 1);
     pvc11.rotation.z = Math.PI/2;
     pvc11.rotation.y = Math.PI/2;
-    robot.add(pvc11);
-    var pvc12= new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,2,9), pvcMat);
+    robot.body.add(pvc11);
+    var pvc12= new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,2,16), pvcMat);
     pvc12.position.y = 6;
     pvc12.position.z = 1;
     pvc12.rotation.z = Math.PI/2;
     pvc12.rotation.y = Math.PI/2;
-    robot.add(pvc12);
-    
+    robot.body.add(pvc12);
 
-    //var bodyGeom = new THREE.CylinderGeometry(2,2,5);
-    //var bodyMat = new THREE.MeshLambertMaterial( { color: 0xAAAAAA } );
-    //var bodyMesh = new Physijs.CylinderMesh(bodyGeom, bodyMat,27);
-    //robot.add(bodyMesh);
-    ////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////
-    //The Wheels
-    var wheelgeom=new THREE.CylinderGeometry(5,5,0.5,16);
-    var wheelmesh=new THREE.Mesh(wheelgeom, woodMat);
-    wheelmesh.position.x=-4;
-    wheelmesh.position.y=-6.5;
-    wheelmesh.position.z=0;
-    robot.add(wheelmesh);
-    var wheelmesh2=new THREE.Mesh(wheelgeom, woodMat);
-    wheelmesh2.position.x=-4;
-    wheelmesh2.position.y=6.5;
-    wheelmesh2.position.z=0;
-    robot.add(wheelmesh2);
+    var elbowGeom = new THREE.TubeGeometry(new QuarterCircle(2), 10, 0.75, 16, false);
+
+    var elbow1 = new THREE.Mesh(elbowGeom, pvcMat, 5);
+    elbow1.rotation.y = Math.PI/2;
+    elbow1.position.set(0, 4, 4);
+    robot.body.add(elbow1);
+
+    var elbow2 = new THREE.Mesh(elbowGeom, pvcMat, 5);
+    elbow2.rotation.y = -Math.PI/2;
+    elbow2.rotation.z = Math.PI;
+    elbow2.position.set(0, -4, 4);
+    robot.body.add(elbow2);
+
+    var elbow3 = new THREE.Mesh(elbowGeom, pvcMat, 5);
+    elbow3.rotation.z = -Math.PI;
+    elbow3.rotation.x = Math.PI/2;
+    elbow3.position.set(8, 6, 0);
+    robot.body.add(elbow3);
+
+
     var gg = new THREE.CylinderGeometry(3,3,0.7,12);
     var gearmesh = new THREE.Mesh(gg, woodMat);
     gearmesh.position.x = 0;
@@ -142,9 +135,30 @@ function initRobot(x0, y0) {
     c2mesh.position.z = -0.85;
     cbasemesh.add(c2mesh);
 
-    //    scene.addConstraint(Rconstraint)
-
+    // Add the body to the scene
     scene.add(robot);
+
+    // Add the wheels to the scene independently
+    robot.wheelL = createWheel();
+    robot.wheelL.position.set(x0-4, y0-6.5, 5);
+    scene.add(robot.wheelL);
+
+    robot.wheelR = createWheel();
+    robot.wheelR.position.set(x0-4, y0+6.5, 5);
+    scene.add(robot.wheelR);
+
+    return robot;
+}
+
+///////////////////////////////////////////////////////////////////////////
+//The Wheels
+function createWheel() {
+    var wheelGeom = new THREE.CylinderGeometry(5,5,0.5,32);
+    var wheelMat = new THREE.MeshLambertMaterial( { color: 0x000080 } );
+    var wheelSurf = Physijs.createMaterial( wheelMat, 0.8, 0.2 );
+    var mesh = new Physijs.CylinderMesh(wheelGeom, wheelSurf, 100);
+    return mesh;
+}
 
 /*
     //The movement
@@ -200,7 +214,6 @@ function initRobot(x0, y0) {
 	          
 	      }
 	  });
-*/
     return robot;
 
     //Thus sayeth the Chicken Chucker, "My fair brethren, what hast
@@ -215,6 +228,7 @@ function initRobot(x0, y0) {
     //                                         Chucker
 
 }
+*/
 
 /*
 function initRobot(x0, y0) {
