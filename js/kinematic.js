@@ -233,6 +233,8 @@ function toggleSmallMast(section) {
     tween.to( target, 1000 );
     tween.onUpdate( function() {
         smMasts[s].userData.raised = ( smMasts[s].rotation.x == 0 );
+        smMasts[s].__dirtyPosition = true;
+        smMasts[s].__dirtyRotation = true;
     } );
     tween.onComplete( function() {
         // Indicate that the operation has completed
@@ -269,6 +271,8 @@ function toggleLargeMast(section) {
     tween.to( target, 1000 );
     tween.onUpdate( function() {
         lgMasts[s].userData.raised = ( lgMasts[s].rotation.x == 0 );
+        lgMasts[s].__dirtyPosition = true;
+        lgMasts[s].__dirtyRotation = true;
     } );
     tween.onComplete( function() {
         // Indicate that the operation has completed
@@ -309,7 +313,11 @@ function toggleSmallBlades(section) {
     tween.to( target, 1000 );
     tween.onUpdate( function() {
         smBlades[s][1].rotation.y = this.y1;
+        smBlades[s][1].__dirtyPosition = true;
+        smBlades[s][1].__dirtyRotation = true;
         smBlades[s][2].rotation.y = this.y2;
+        smBlades[s][2].__dirtyPosition = true;
+        smBlades[s][2].__dirtyRotation = true;
     } );
     tween.onComplete( function() {
         // Indicate that the operation has completed
@@ -341,6 +349,10 @@ function toggleGates(section) {
                  gateRaisedAngles[i]*Math.sin(phi) )
         };
         tween.to( target, 1000 );
+        tween.onUpdate( function() {
+            this.__dirtyPosition = true;
+            this.__dirtyRotation = true;
+        } );
         tween.onComplete( function() {
             gateLock[s] = false;
         } );
