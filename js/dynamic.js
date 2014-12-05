@@ -133,7 +133,7 @@ function makeSmallNacelle() {
 	      var theta = l * Math.PI / 3 + Math.PI / 6;
 	      var x = r * Math.sin(theta);
 	      var z = r * Math.cos(theta);
-	      var mesh = new Physjis.CylinderMesh(smPvcGeom, pvcMatDS);
+	      var mesh = new Physijs.CylinderMesh(smPvcGeom, pvcMatDS);
 	      mesh.castShadow = true;
 	      mesh.receiveShadow = false;
 	      mesh.position.set(x, -2, z);
@@ -203,26 +203,26 @@ function makeSmallBladeHub(section) {
     var smCapGeom = new THREE.CylinderGeometry(0.75, 0.75, 0.5, 16);
     var smBladeGeom = new THREE.CylinderGeometry(0.5, 0.5, 20);
 
-    smHub = new Physijs.CylinderMesh(smHubGeom, woodMat);
+    smHub = new Physijs.CylinderMesh(smHubGeom, woodSurf, 200);
     smBlades[s] = [];
     for (var j=0; j<3; ++j) {
         var x = 2.125*Math.cos(j*2*Math.PI/3);
         var y = -0.5;
         var z = 2.125*Math.sin(j*2*Math.PI/3);
-        var smbMount = new Physijs.CylinderMesh(smbMountGeom, pvcMat);
+        var smbMount = new Physijs.CylinderMesh(smbMountGeom, pvcSurf, 10);
         smbMount.position.set(x, y, z);
         
-        var smElbow = new Physijs.TubeMesh(smbElbowGeom, pvcMat);
+        var smElbow = new Physijs.ConvexMesh(smbElbowGeom, pvcSurf, 5);
         smElbow.rotation.y = smbClosedAngles[j];
         smElbow.position.set(0, 1.5, 0);
         smbMount.add(smElbow);
 
-        var smCap = new Physijs.CylinderMesh(smCapGeom, pvcMat);
+        var smCap = new Physijs.CylinderMesh(smCapGeom, pvcSurf, 5);
         smCap.rotation.z = Math.PI/2;
         smCap.position.set(2.25, 2, 0);
         smElbow.add(smCap);
 
-        var smBlade = new Physijs.CylinderMesh(smBladeGeom, pvcMat);
+        var smBlade = new Physijs.CylinderMesh(smBladeGeom, pvcSurf, 20);
         smBlade.rotation.z = Math.PI/2;
         smBlade.position.set(11, 2, 0);
         smElbow.add(smBlade);
