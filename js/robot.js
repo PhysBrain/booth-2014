@@ -1,5 +1,8 @@
 //////////////ROBOT SIMULATOR CODE - GORDON TENEV/////////////
 function initRobot(x0, y0) {
+    x0 = 0;
+    y0 = 0;
+    //robot body
     robot = new THREE.Object3D;
     robot.position.x = x0;
     robot.position.y = y0;
@@ -9,20 +12,24 @@ function initRobot(x0, y0) {
     robot.body.position.y = 0;
     robot.body.position.z = 0;
     robot.add(robot.body);
+    //top left pvc pipe by the left axle
     var pvc1= new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,16,16), pvcMat);
     pvc1.position.y = 6;
     pvc1.rotation.z = Math.PI/2;
     robot.body.add(pvc1);
+    //top right pvc pipe by the right axle
     var pvc2= new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,16,16), pvcMat);
     pvc2.position.y = -6;
     pvc2.rotation.z = Math.PI/2;
     robot.body.add(pvc2);
+    //bottom right pvc pipe by the right axle
     var pvc3= new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,20,16), pvcMat);
     pvc3.position.z = -2;
     pvc3.position.y = -6;
     pvc3.position.x = -2;
     pvc3.rotation.z = Math.PI/2;
     robot.body.add(pvc3);
+    //short right front pvc
     var pvc4= new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,4,16), pvcMat);
     pvc4.position.y = -6;
     pvc4.position.z = -0.25;
@@ -30,14 +37,16 @@ function initRobot(x0, y0) {
     pvc4.rotation.z = Math.PI/2;
     pvc4.rotation.y = Math.PI/2;
     robot.body.add(pvc4);
-    var pvc5= new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,20,16), pvcMat);
+    //bottom left pvc pipe by the left axle
+    var pvc5= new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,18,16), pvcMat);
     pvc5.position.z = -2;
     pvc5.position.y = 6;
-    pvc5.position.x = -2;
+    pvc5.position.x = -3;
     pvc5.rotation.z = Math.PI/2;
     robot.body.add(pvc5);
-    var pvc6= new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,4,16), pvcMat);
-    pvc6.position.set(8, 6, -0.25);
+    //short left front pvc
+    var pvc6= new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,1,16), pvcMat);
+    pvc6.position.set(8, 6, 0);
     pvc6.position.x = 8;
     pvc6.rotation.z = Math.PI/2;
     pvc6.rotation.y = Math.PI/2;
