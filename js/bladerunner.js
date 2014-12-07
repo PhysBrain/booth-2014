@@ -254,9 +254,9 @@ function initScene() {
     //var ambient = new THREE.AmbientLight( 0x222222 );
     //scene.add( ambient );
 
-//    initStaticBodies();
-//    initDynamicBodies();
-//    initKinematicBodies();
+    initStaticBodies();
+    initDynamicBodies();
+    initKinematicBodies();
 }
 
 function resetCamera() {
