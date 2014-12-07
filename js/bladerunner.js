@@ -49,7 +49,7 @@ var woodSurf = woodMat;
 var pvcSurf = pvcMat;
 var invisibleSurf = invisibleMat;
 
-var enablePhysics = false;
+var enablePhysics = true;
 
 if (enablePhysics) {
     Physijs.scripts.worker = 'js/libs/physijs_worker.js';
